@@ -1,6 +1,6 @@
 # Dygraphs Widget for Yii
+-------------------------
 A simple widget for Yii 1, based on [Dygraphs] (http://dygraphs.com/).
-======================================================================
 
 ## Installation
 ---------------
@@ -16,7 +16,7 @@ $this->widget('ext.dygraphswidget.DygraphsWidget', array(
 ```
 
 ## Dygraphs options
-----------
+-------------------
 You can set the *options* property to pass additional options to the Dygraphs object:
 ```
 $this->widget('DygraphsWidget', array(
@@ -32,7 +32,7 @@ $this->widget('DygraphsWidget', array(
 ## Data formats
 ---------------
 The data property can be specified in three different formats. Consider the following examples, and make sure to read [http://dygraphs.com/data.html] (the official documentation) for more details:
-1. Matrix
+- Matrix
 ```
 $data = array(
 	array(1, 25, 100),
@@ -41,11 +41,11 @@ $data = array(
 	...
 );
 ```
-2. URL
+- URL
 ```
 $data = 'http://dygraphs.com/dow.txt';
 ```
-3. Function
+- Function
 A string with JS code that returns a data object usable by Dygraphs. You can omit the function declaration:
 ```
 $data = '
