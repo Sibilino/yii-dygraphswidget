@@ -31,7 +31,7 @@ $this->widget('DygraphsWidget', array(
 
 ## Data formats
 ---------------
-The data property can be specified in three different formats. Consider the following examples, and make sure to read [http://dygraphs.com/data.html] (the official documentation) for more details:
+The data property can be specified in three different formats. Consider the following examples, and make sure to read [the official documentation] (http://dygraphs.com/data.html) for more details:
 - Matrix
 ```
 $data = array(
