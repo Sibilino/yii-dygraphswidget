@@ -42,6 +42,7 @@ $data = array(
 );
 ```
 - URL
+An absolute URL to a text file with the data.
 ```
 $data = 'http://dygraphs.com/dow.txt';
 ```
@@ -70,5 +71,6 @@ The following widget properties can also be specified:
 - **scriptUrl**: The URL where the Dygraphs.js library is taken from. You can modify this property to use a locally-hosted Dygraphs library, or to use another version.
 - **model** and **attribute**: Specify a CModel instance and one of its attributes in order to take the data from it.
 - **jsVarName**: Specifies a custom name for the JS variable that will receive the Dygraphs object upon creation.
+- **htmlOptions**: Additional HTML attributes for the graph-containing div.
 
  
