@@ -87,15 +87,22 @@ class DygraphsWidget extends CWidget {
 	}
 	
 	/**
-	 * Encodes the current data into the proper JS variable or function.
+	 * Encodes the current data into the proper JS variable, URL or function.
 	 * @return Ambigous <string, mixed>
 	 */
 	protected function generateData() {
 		if (is_string($this->data)) {
-			if (strpos($this->data, 'function') !== 0) {
-				$this->data = "function () { $this->data }";
+			$url_validator = new CUrlValidator();
+			$url = $url_validator->validateValue($this->data);
+			if ($url !== false) {
+				$this->data = $url;
+			} else {
+				if (strpos($this->data, 'function') !== 0) {
+					$this->data = "function () { $this->data }";
+				}
+				$this->data = new CJavaScriptExpression($this->data);
 			}
-			$this->data = new CJavaScriptExpression($this->data);
+			
 		} elseif (is_array($this->data)&& $this->xIsDate) {
 			foreach ($this->data as &$row) {
 				$row[0] = new CJavaScriptExpression("new Date('$row[0]')");
