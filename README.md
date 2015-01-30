@@ -1,16 +1,16 @@
 # Dygraphs Widget for Yii
-=========================
 A simple widget for Yii 1, based on [Dygraphs] (http://dygraphs.com/).
+======================================================================
 
 ## Installation
 ---------------
-Just unpack the widget in the `extensions` folder of your Yii application.
+Unpack the content of the widget's zip file in the `extensions\dygraphswidget` folder within your Yii application.
 
 ## Usage
 --------
 In your view, create the widget with your data matrix as its *data* option.
 ```
-$this->widget('ext.yii-dygraphswidget.DygraphsWidget', array(
+$this->widget('ext.dygraphswidget.DygraphsWidget', array(
 		'data'=> $your_data,
 	));
 ```
