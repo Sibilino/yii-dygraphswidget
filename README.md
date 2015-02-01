@@ -1,6 +1,6 @@
 # Dygraphs Widget for Yii
 -------------------------
-A simple widget for Yii 1, based on [Dygraphs] (http://dygraphs.com/).
+A simple graph widget for Yii 1, based on [Dygraphs] (http://dygraphs.com/).
 
 ## Installation
 ---------------
@@ -32,7 +32,7 @@ $this->widget('DygraphsWidget', array(
 ## Data formats
 ---------------
 The data property can be specified in three different formats. Consider the following examples, and make sure to read [the official documentation] (http://dygraphs.com/data.html) for more details:
-- Matrix
+- **Matrix**
 ```
 $data = array(
 	array(1, 25, 100),
@@ -41,12 +41,12 @@ $data = array(
 	...
 );
 ```
-- URL
+- **URL**
 An absolute URL to a text file with the data.
 ```
 $data = 'http://dygraphs.com/dow.txt';
 ```
-- Function
+- **Function**
 A string with JS code that returns a data object usable by Dygraphs. You can omit the function declaration:
 ```
 $data = '
@@ -67,7 +67,7 @@ $data = '
 ## Additional options
 ---------------------
 The following widget properties can also be specified:
-- **xIsDate**: Set this property to true if the x-values (first value in each row of the data matrix) are a date strings, in order to properly convert them to JS date objects for Dygraphs.
+- **xIsDate**: Set this property to true if the x-values (first value in each row of the data matrix) are date strings, in order to properly convert them to JS date objects for Dygraphs.
 - **scriptUrl**: The URL where the Dygraphs.js library is taken from. You can modify this property to use a locally-hosted Dygraphs library, or to use another version.
 - **model** and **attribute**: Specify a CModel instance and one of its attributes in order to take the data from it.
 - **jsVarName**: Specifies a custom name for the JS variable that will receive the Dygraphs object upon creation.
