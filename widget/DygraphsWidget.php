@@ -54,7 +54,8 @@ class DygraphsWidget extends CWidget {
 	public function init() {
 		Yii::app()->clientScript->registerScriptFile($this->scriptUrl);
 		if ($this->hasModel()) {
-			$this->data = $model->$attribute;
+			$attr = $this->attribute;
+			$this->data = $this->model->$attr;
 		}
 		if (!isset($this->htmlOptions['id'])) {
 			$this->htmlOptions['id'] = $this->getId();
