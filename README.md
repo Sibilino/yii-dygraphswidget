@@ -4,7 +4,7 @@ A simple graph widget for Yii 1, based on [Dygraphs] (http://dygraphs.com/).
 
 ## Installation
 ---------------
-Unpack the content of the widget's zip file in the `extensions\dygraphswidget` folder within your Yii application.
+Download the latest release and unpack the content of the widget's folder inside the `extensions\dygraphswidget` folder within your Yii application.
 
 ## Usage
 --------
@@ -24,7 +24,7 @@ $this->widget('DygraphsWidget', array(
 		'options'=>array(
 			'labels' => array('X', 'Sin', 'Rand', 'Pow'),
 			'title'=> 'Main Graph',
-			...
+			//...
 		),
 	));
 ```
@@ -38,7 +38,7 @@ $data = array(
 	array(1, 25, 100),
 	array(2, 50, 90),
 	array(3, 100, 80),
-	...
+	//...
 );
 ```
 - **URL**
