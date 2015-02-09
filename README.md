@@ -47,9 +47,9 @@ An absolute URL to a text file with the data.
 $data = 'http://dygraphs.com/dow.txt';
 ```
 - **Function**
-A string with JS code that returns a data object usable by Dygraphs. You can omit the function declaration:
+A string with JS code that returns a data object usable by Dygraphs.
 ```
-$data = '
+$data = 'function () {
 	var data = [];
       for (var i = 0; i < 1000; i++) {
         var base = 10 * Math.sin(i / 90.0);
@@ -61,7 +61,7 @@ $data = '
         data[i][2] += 5.0;
       }
 	return data;
-';
+}';
 ```
 
 ## Additional options

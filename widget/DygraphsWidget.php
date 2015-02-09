@@ -71,7 +71,7 @@ class DygraphsWidget extends CWidget {
 		
 		$id = $this->htmlOptions['id'];
 		$options = CJavaScript::encode($this->options);
-		$data = $this->generateData();
+		$data = $this->preprocessData();
 		$script = "var $this->jsVarName = new Dygraph(
 			 document.getElementById('$id'),
 			 $data,
@@ -91,19 +91,17 @@ class DygraphsWidget extends CWidget {
 	 * Encodes the current data into the proper JS variable, URL or function.
 	 * @return Ambigous <string, mixed>
 	 */
-	protected function generateData() {
+	protected function preprocessData() {
 		if (is_string($this->data)) {
-			$url_validator = new CUrlValidator();
-			$url = $url_validator->validateValue($this->data);
-			if ($url !== false) {
-				$this->data = $url;
-			} else {
-				if (strpos($this->data, 'function') !== 0) {
-					$this->data = "function () { $this->data }";
-				}
+			if (strpos($this->data, 'function') === 0) {
 				$this->data = new CJavaScriptExpression($this->data);
+			} else {
+				$url_validator = new CUrlValidator();
+				$url = $url_validator->validateValue($this->data);
+				if ($url !== false) {
+					$this->data = $url;
+				}
 			}
-			
 		} elseif (is_array($this->data)&& $this->xIsDate) {
 			foreach ($this->data as &$row) {
 				$row[0] = new CJavaScriptExpression("new Date('$row[0]')");
