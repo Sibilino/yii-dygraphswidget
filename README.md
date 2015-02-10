@@ -4,7 +4,7 @@ A simple graph widget for Yii 1, based on [Dygraphs] (http://dygraphs.com/).
 
 ## Installation
 ---------------
-Download the latest release and unpack the content of the widget's folder inside the `extensions\dygraphswidget` folder within your Yii application.
+Download the latest release and unpack the **contents** of the `widget` folder inside the `protected\extensions\dygraphswidget` folder within your Yii application.
 
 ## Usage
 --------
