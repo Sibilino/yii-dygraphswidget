@@ -7,10 +7,10 @@
 class DygraphsWidget extends CWidget {
 	
 	/**
-	 * URL to the dygraphs library to be used.
+	 * URL to the dygraphs library to be used. If not specified, the widget will publish its own distribution of the Dygraphs library.
 	 * @var string
 	 */
-	public $scriptUrl = 'https://cdnjs.cloudflare.com/ajax/libs/dygraph/1.1.0/dygraph-combined.js';
+	public $scriptUrl;
 	/**
 	 * Can be used together with $attribute instead of setting the $data property.
 	 * @var CModel
@@ -52,6 +52,9 @@ class DygraphsWidget extends CWidget {
 	public $xIsDate;
 	
 	public function init() {
+		if (!isset($this->scriptUrl)) {
+			$this->scriptUrl = Yii::app()->assetManager->publish(dirname(__FILE__).'/js/dygraph-combined.js');
+		}
 		Yii::app()->clientScript->registerScriptFile($this->scriptUrl);
 		if ($this->hasModel()) {
 			$attr = $this->attribute;

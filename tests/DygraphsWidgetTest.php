@@ -26,6 +26,7 @@ class DygraphsWidgetTest extends PHPUnit_Framework_TestCase {
 		$this->assertInstanceOf('DygraphsWidget', $widget);
 		$this->assertTrue(isset($widget->htmlOptions['id']));
 		$this->assertTrue(isset($widget->jsVarName));
+		$this->assertRegExp("@.*\/assets\/[^\/]+\/dygraph-combined\.js$@", $widget->scriptUrl);
 		$this->assertEquals($model->chart, $widget->data);
 		$this->assertTrue(Yii::app()->clientScript->isScriptFileRegistered($widget->scriptUrl));
 	}
