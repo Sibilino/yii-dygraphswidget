@@ -37,12 +37,16 @@ class DygraphsWidgetTest extends PHPUnit_Framework_TestCase {
 		));
 	}
 	
+	private function getLastScript() {
+		$scripts = array_values(end(Yii::app()->clientScript->scripts));
+		return end($scripts);
+	}
+	
 	private function dataTester($data, $expected) {
 		$widget = $this->controller->widget('DygraphsWidget', array(
 				'data'=>$data,
 		));
-		$scripts = array_values(end(Yii::app()->clientScript->scripts));
-		$this->assertContains($expected, end($scripts));
+		$this->assertContains($expected, $this->getLastScript());
 	}
 	
 	public function testDataUrl() {
@@ -72,8 +76,58 @@ class DygraphsWidgetTest extends PHPUnit_Framework_TestCase {
 				'data'=>$data,
 				'xIsDate'=>true,
 		));
-		$scripts = array_values(end(Yii::app()->clientScript->scripts));
-		$this->assertContains("[[new Date('2014/01/10 00:06:50'),25,100],[new Date('2014/12/23 10:16:40'),50,90],[new Date('2015/07/01 03:09:19'),100,80]]", end($scripts));
+		$this->assertContains(
+				"[[new Date('2014/01/10 00:06:50'),25,100],[new Date('2014/12/23 10:16:40'),50,90],[new Date('2015/07/01 03:09:19'),100,80]]",
+				$this->getLastScript()
+				);
 	}
 	
+	public function testVarName() {
+		$widget = $this->controller->widget('DygraphsWidget', array(
+				'jsVarName'=>'testvar',
+		));
+		$this->assertContains(
+				"var testvar = new Dygraph(",
+				$this->getLastScript()
+		);
+	}
+	
+	public function testOptions() {
+		$widget = $this->controller->widget('DygraphsWidget', array(
+				'options'=>array(
+		                'strokeWidth' => 2,
+		                'parabola' => array(
+		                  'strokeWidth' => 0.0,
+		                  'drawPoints' => true,
+		                  'pointSize' => 4,
+		                  'highlightCircleSize' => 6
+		                ),
+		                'line' => array(
+		                  'strokeWidth' => 1.0,
+		                  'drawPoints' => true,
+		                  'pointSize' => 1.5
+		                ),
+		                'sine wave' => array(
+		                  'strokeWidth' => 3,
+		                  'highlightCircleSize' => 10
+		                ),
+				),
+		));
+		$this->assertContains(
+				"{'strokeWidth':2,'parabola':{'strokeWidth':0,'drawPoints':true,'pointSize':4,'highlightCircleSize':6},'line':{'strokeWidth':1,'drawPoints':true,'pointSize':1.5},'sine wave':{'strokeWidth':3,'highlightCircleSize':10}}",
+				$this->getLastScript()
+		);
+	}
+	
+	public function testHtmlOptions() {
+		$this->expectOutputString('<div id="test-id" class="test-class centered" data-toggle="dropdown" onChange="alert(&#039;hello&#039;)"></div>');
+		$widget = $this->controller->widget('DygraphsWidget', array(
+				'htmlOptions'=>array(
+					'id' =>  'test-id',
+					'class' => 'test-class centered',
+					'data-toggle' => 'dropdown',
+					'onChange' => "alert('hello')"
+				),
+		));
+	}
 }
