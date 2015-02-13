@@ -1,0 +1,16 @@
+{
+    "name": "sibilino/dygraphswidget",
+    "description": "Graphing and charting widget for Yii 1, based on Dygraphs.js",
+    "keywords": ["chart","yii","graph","widget","dygraphs"],
+    "homepage": "https://github.com/Sibilino/yii-dygraphswidget",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Luis Hernández Hernández",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.0"
+    },
+}
