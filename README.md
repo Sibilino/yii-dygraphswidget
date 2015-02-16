@@ -66,6 +66,7 @@ $data = 'function () {
 
 ## Additional options
 ---------------------
+
 The following widget properties can also be specified:
 - **xIsDate**: Set this property to true if the x-values (first value in each row of the data matrix) are date strings, in order to properly convert them to JS date objects for Dygraphs.
 - **scriptUrl**: The URL where the Dygraphs.js library is taken from. If not set, the widget will locally publish its own distribution of the Dygraphs library.
@@ -73,4 +74,25 @@ The following widget properties can also be specified:
 - **jsVarName**: Specifies a custom name for the JS variable that will receive the Dygraphs object upon creation.
 - **htmlOptions**: Additional HTML attributes for the graph-containing div.
 
- 
+## Passing JavaScript functions
+-------------------------------
+Both the data and options for the widget support literal JavaScript code. In order to pass JavaScript code, just prepend *js:* to the string containing the code.
+For example, if your data is contained in a JavaScript var with the name *javascriptData*:
+```
+$data = 'js:javascriptData';
+```
+Or let's say you need to pass a function for a Callback option:
+```
+$options = 'js:function(canvas, area, g) {
+				var bottom_left = g.toDomCoords(highlight_start, -20);
+				var top_right = g.toDomCoords(highlight_end, +20);
+
+				var left = bottom_left[0];
+				var right = top_right[0];
+
+				canvas.fillStyle = "rgba(255, 255, 102, 1.0)";
+				canvas.fillRect(left, area.y, right - left, area.h);
+            }';
+```
+
+Alternatively, you can pass a new instance of CJavaScriptExpression() constructed with your JavaScript string.
