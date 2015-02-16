@@ -83,7 +83,9 @@ $data = 'js:javascriptData';
 ```
 Or let's say you need to pass a function for a Callback option:
 ```
-$options = 'js:function(canvas, area, g) {
+$options = array(
+	'underlayCallback' => 'js:function(canvas, area, g)
+			{
 				var bottom_left = g.toDomCoords(highlight_start, -20);
 				var top_right = g.toDomCoords(highlight_end, +20);
 
@@ -92,7 +94,8 @@ $options = 'js:function(canvas, area, g) {
 
 				canvas.fillStyle = "rgba(255, 255, 102, 1.0)";
 				canvas.fillRect(left, area.y, right - left, area.h);
-            }';
+            }'
+);
 ```
 
 Alternatively, you can pass a new instance of CJavaScriptExpression() constructed with your JavaScript string.
