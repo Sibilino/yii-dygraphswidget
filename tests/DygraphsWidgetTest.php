@@ -21,6 +21,7 @@ class DygraphsWidgetTest extends PHPUnit_Framework_TestCase {
 		$widget = $this->controller->beginWidget('DygraphsWidget', array(
 			'model'=>$model,
 			'attribute'=>'chart',
+			'scriptPosition'=>CClientScript::POS_END,
 		));
 		
 		$this->assertInstanceOf('DygraphsWidget', $widget);
@@ -28,7 +29,7 @@ class DygraphsWidgetTest extends PHPUnit_Framework_TestCase {
 		$this->assertTrue(isset($widget->jsVarName));
 		$this->assertRegExp("@.*\/assets\/[^\/]+\/dygraph-combined\.js$@", $widget->scriptUrl);
 		$this->assertEquals($model->chart, $widget->data);
-		$this->assertTrue(Yii::app()->clientScript->isScriptFileRegistered($widget->scriptUrl));
+		$this->assertTrue(Yii::app()->clientScript->isScriptFileRegistered($widget->scriptUrl, CClientScript::POS_END));
 	}
 	
 	public function testRun() {

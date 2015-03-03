@@ -12,6 +12,11 @@ class DygraphsWidget extends CWidget {
 	 */
 	public $scriptUrl;
 	/**
+	 * The position where the Dygraphs.js library will be registered. See {@link CClientScript::registerScriptFile} for possible values.
+	 * @var integer
+	 */
+	public $scriptPosition;
+	/**
 	 * Can be used together with $attribute instead of setting the $data property.
 	 * @var CModel
 	 */
@@ -55,7 +60,10 @@ class DygraphsWidget extends CWidget {
 		if (!isset($this->scriptUrl)) {
 			$this->scriptUrl = Yii::app()->assetManager->publish(dirname(__FILE__).'/js/dygraph-combined.js');
 		}
-		Yii::app()->clientScript->registerScriptFile($this->scriptUrl);
+		if (!isset($this->scriptPosition)) {
+			$this->scriptPosition = CClientScript::POS_READY;
+		}
+		Yii::app()->clientScript->registerScriptFile($this->scriptUrl, $this->scriptPosition);
 		if ($this->hasModel()) {
 			$attr = $this->attribute;
 			$this->data = $this->model->$attr;
