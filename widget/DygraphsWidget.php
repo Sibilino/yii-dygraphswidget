@@ -12,7 +12,7 @@ class DygraphsWidget extends CWidget {
 	 */
 	public $scriptUrl;
 	/**
-	 * The position where the Dygraphs.js library will be registered. See {@link CClientScript::registerScriptFile} for possible values.
+	 * The position at which the graph initialization script will be registered. See {@link CClientScript::registerScriptFile} for possible values.
 	 * @var integer
 	 */
 	public $scriptPosition;
@@ -56,14 +56,17 @@ class DygraphsWidget extends CWidget {
 	 */
 	public $xIsDate;
 	
+	public $checkBoxSelector;
+	public $checkBoxReferenceAttr = 'dygw-id';
+	
 	public function init() {
 		if (!isset($this->scriptUrl)) {
 			$this->scriptUrl = Yii::app()->assetManager->publish(dirname(__FILE__).'/js/dygraph-combined.js');
 		}
+		Yii::app()->clientScript->registerScriptFile($this->scriptUrl, CClientScript::POS_HEAD);
 		if (!isset($this->scriptPosition)) {
 			$this->scriptPosition = CClientScript::POS_READY;
 		}
-		Yii::app()->clientScript->registerScriptFile($this->scriptUrl, $this->scriptPosition);
 		if ($this->hasModel()) {
 			$attr = $this->attribute;
 			$this->data = $this->model->$attr;
@@ -88,7 +91,8 @@ class DygraphsWidget extends CWidget {
 			 $data,
 			 $options
 		);";
-		Yii::app()->clientScript->registerScript(__CLASS__."#$id-run-dygraphs", $script);
+		Yii::app()->clientScript->registerScript(__CLASS__."#$id-run-dygraphs", $script, $this->scriptPosition);
+		
 	}
 	
 	/**

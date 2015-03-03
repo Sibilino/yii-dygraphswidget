@@ -29,14 +29,16 @@ class DygraphsWidgetTest extends PHPUnit_Framework_TestCase {
 		$this->assertTrue(isset($widget->jsVarName));
 		$this->assertRegExp("@.*\/assets\/[^\/]+\/dygraph-combined\.js$@", $widget->scriptUrl);
 		$this->assertEquals($model->chart, $widget->data);
-		$this->assertTrue(Yii::app()->clientScript->isScriptFileRegistered($widget->scriptUrl, CClientScript::POS_END));
+		$this->assertTrue(Yii::app()->clientScript->isScriptFileRegistered($widget->scriptUrl, CClientScript::POS_HEAD));
 	}
 	
 	public function testRun() {
 		$this->expectOutputString('<div id="test"></div>');
 		$widget = $this->controller->widget('DygraphsWidget', array(
 				'htmlOptions' => array('id'=>'test'),
+				'scriptPosition' => CClientScript::POS_END,
 		));
+		$this->assertTrue(Yii::app()->clientScript->isScriptRegistered('DygraphsWidget#test-run-dygraphs', CClientScript::POS_END));
 	}
 	
 	private function getLastScript() {
