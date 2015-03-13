@@ -55,9 +55,18 @@ class DygraphsWidget extends CWidget {
 	 * @var boolean
 	 */
 	public $xIsDate;
-	
+	/**
+	 * CSS selector that matches checkboxes in your DOM. If this property is set, the matched checkboxes will control the visibility
+	 * of series in the Dygraphs chart. To associate a series with a checkbox, specify the id of the series in the {@link checkBoxReferenceAttr}
+	 * attribute of the checkbox.
+	 * @var string Optional. If this property is not set, the visibility checkbox feature will be disabled.
+	 */
 	public $checkBoxSelector;
-	public $checkBoxReferenceAttr = 'dygw-id';
+	/**
+	 * The attribute of each checkbox matched by {@link $checkBoxSelector} that indicats which of the series is controlled by that checkbox.
+	 * @var string Optional. By default, the attribute is "id".
+	 */
+	public $checkBoxReferenceAttr = 'id';
 	
 	public function init() {
 		if (!isset($this->scriptUrl)) {
@@ -86,13 +95,40 @@ class DygraphsWidget extends CWidget {
 		$id = $this->htmlOptions['id'];
 		$options = CJavaScript::encode($this->options);
 		$data = $this->preprocessData();
-		$script = "var $this->jsVarName = new Dygraph(
-			 document.getElementById('$id'),
-			 $data,
-			 $options
-		);";
+		$script = "
+			var $this->jsVarName = new Dygraph(
+				document.getElementById('$id'),
+				$data,
+				$options
+			);
+		";
 		Yii::app()->clientScript->registerScript(__CLASS__."#$id-run-dygraphs", $script, $this->scriptPosition);
 		
+		if (isset($this->checkBoxSelector)) {
+			$this->registerCheckboxScript();
+		}
+		
+	}
+	
+	/**
+	 * Registers the necessary jQuery scripts to enable the visibility checkbox feature.
+	 * @see checkBoxSelector
+	 * @see checkBoxReferenceAttr
+	 */
+	protected function registerCheckboxScript() {
+		Yii::app()->clientScript->registerCoreScript('jquery');
+		$script = "
+			// Check the checkboxes that correspond to visible series
+			$.each($this->jsVarName.getOption('visibility'), function (i, val) {
+				$('$this->checkBoxSelector[$this->checkBoxReferenceAttr=' + i + ']').prop('checked', val);
+			});
+			// On checkbox click, modify the visibility of the corresponding series
+			$('$this->checkBoxSelector').click(function () {
+				$this->jsVarName.setVisibility($(this).attr('$this->checkBoxReferenceAttr'), $(this).prop('checked'));
+			});
+		";
+		$id = $this->htmlOptions['id'];
+		Yii::app()->clientScript->registerScript(__CLASS__."#$id-checkbox-function", $script, $this->scriptPosition);
 	}
 	
 	/**
