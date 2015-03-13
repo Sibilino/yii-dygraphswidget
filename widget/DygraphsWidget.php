@@ -60,11 +60,13 @@ class DygraphsWidget extends CWidget {
 	 * of series in the Dygraphs chart. To associate a series with a checkbox, specify the id of the series in the {@link checkBoxReferenceAttr}
 	 * attribute of the checkbox.
 	 * @var string Optional. If this property is not set, the visibility checkbox feature will be disabled.
+	 * @since 1.1.0
 	 */
 	public $checkBoxSelector;
 	/**
 	 * The attribute of each checkbox matched by {@link $checkBoxSelector} that indicats which of the series is controlled by that checkbox.
 	 * @var string Optional. By default, the attribute is "id".
+	 * @since 1.1.0
 	 */
 	public $checkBoxReferenceAttr = 'id';
 	
@@ -114,6 +116,7 @@ class DygraphsWidget extends CWidget {
 	 * Registers the necessary jQuery scripts to enable the visibility checkbox feature.
 	 * @see checkBoxSelector
 	 * @see checkBoxReferenceAttr
+	 * @since 1.1.0
 	 */
 	protected function registerCheckboxScript() {
 		Yii::app()->clientScript->registerCoreScript('jquery');
