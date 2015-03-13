@@ -2,6 +2,10 @@
 -------------------------
 A simple graph widget for Yii 1, based on [Dygraphs] (http://dygraphs.com/).
 
+## Changelog
+------------
+1.1.0 - Added visibility checkboxes feature.
+
 ## Installation
 ---------------
 Download the latest release and unpack the **contents** of the `widget` folder inside the `protected\extensions\dygraphswidget` folder within your Yii application.
@@ -9,7 +13,7 @@ Download the latest release and unpack the **contents** of the `widget` folder i
 ## Usage
 --------
 In your view, create the widget with your data matrix as its *data* option.
-```
+```php
 $this->widget('ext.dygraphswidget.DygraphsWidget', array(
 		'data'=> $your_data,
 	));
@@ -18,7 +22,7 @@ $this->widget('ext.dygraphswidget.DygraphsWidget', array(
 ## Dygraphs options
 -------------------
 You can set the *options* property to pass additional options to the Dygraphs object:
-```
+```php
 $this->widget('DygraphsWidget', array(
 		'data'=> $your_data,
 		'options'=>array(
@@ -33,7 +37,7 @@ $this->widget('DygraphsWidget', array(
 ---------------
 The data property can be specified in three different formats. Consider the following examples, and make sure to read [the official documentation] (http://dygraphs.com/data.html) for more details:
 - **Matrix**
-```
+```php
 $data = array(
 	array(1, 25, 100),
 	array(2, 50, 90),
@@ -43,12 +47,12 @@ $data = array(
 ```
 - **URL**
 An absolute URL to a text file with the data.
-```
+```php
 $data = 'http://dygraphs.com/dow.txt';
 ```
 - **Function**
 A string with JS code that returns a data object usable by Dygraphs.
-```
+```php
 $data = 'function () {
 	var data = [];
       for (var i = 0; i < 1000; i++) {
@@ -78,11 +82,11 @@ The following widget properties can also be specified:
 -------------------------------
 Both the data and options for the widget support literal JavaScript code. In order to pass JavaScript code, just prepend *js:* to the string containing the code.
 For example, if your data is contained in a JavaScript var with the name *javascriptData*:
-```
+```php
 $data = 'js:javascriptData';
 ```
 Or let's say you need to pass a function for a Callback option:
-```
+```php
 $options = array(
 	'underlayCallback' => 'js:function(canvas, area, g)
 			{
@@ -99,3 +103,31 @@ $options = array(
 ```
 
 Alternatively, you can pass a new instance of CJavaScriptExpression() constructed with your JavaScript string.
+
+## Visibility checkboxes
+------------------------
+It is often useful to hide and show some of the dataseries in a chart. The widget features helper scripts to easily control series visibily with checkboxes.
+
+To use this feature, make sure your page has one checkbox per series in the chart, and give each checkbox an `id` attribute with the index of the series controlled by it.
+Then, configure the widget with a `checkBoxSelector` that matches the group of checkboxes. For example, for a chart with 3 data series:
+```html
+<input class="visibility" id="0" type="checkbox">
+<input class="visibility" id="1" type="checkbox">
+<input class="visibility" id="2" type="checkbox">
+```
+```php
+$this->widget('DygraphsWidget', array(
+		'data'=> array(
+			// (x, series0, series1, series2)
+			array(0, 3, 25, 247),
+			array(1, 6, 26, 127),
+			array(2, 9, 27, -7),
+			//...
+		),
+		'checkBoxSelector' => 'input.visibility',
+		//...
+	),
+));
+```
+
+The attribute that associates a checkbox with a data series (`id` in the example) can be changed by configuring `checkBoxReferenceAttr`.
