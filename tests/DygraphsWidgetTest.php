@@ -41,32 +41,38 @@ class DygraphsWidgetTest extends PHPUnit_Framework_TestCase {
 		$this->assertTrue(Yii::app()->clientScript->isScriptRegistered('DygraphsWidget#test-run-dygraphs', CClientScript::POS_END));
 	}
 	
-	private function getLastScript() {
-		$scripts = array_values(end(Yii::app()->clientScript->scripts));
-		return end($scripts);
+	private function getScript($id) {
+		$scripts = Yii::app()->clientScript->scripts;
+		if (isset($scripts[CClientScript::POS_READY]) && isset($scripts[CClientScript::POS_READY]["DygraphsWidget#$id-run-dygraphs"])) {
+			return $scripts[CClientScript::POS_READY]["DygraphsWidget#$id-run-dygraphs"];
+		}
+		return false;
 	}
 	
-	private function dataTester($data, $expected) {
-		$widget = $this->controller->widget('DygraphsWidget', array(
-				'data'=>$data,
-		));
-		$this->assertContains($expected, $this->getLastScript());
-	}
-	
-	public function testDataUrl() {
-		$this->dataTester('http://localhost/testdata.csv', "'http://localhost/testdata.csv',");
-	}
-	
-	public function testDataFunction() {
-		$this->dataTester('function () {return [[1, 3, 4],[2, 7, 20]];}', "function () {return [[1, 3, 4],[2, 7, 20]];},");
-	}
-	
-	public function testDataArray() {
-		$this->dataTester(array(
+	public function dataFormatProvider() {
+		return array(
+			array('http://localhost/testdata.csv', "'http://localhost/testdata.csv',"),
+			array('function () {return [[1, 3, 4],[2, 7, 20]];}', "function () {return [[1, 3, 4],[2, 7, 20]];},"),
+			array('js:function () {return [[1, 3, 4],[2, 7, 20]];}', "function () {return [[1, 3, 4],[2, 7, 20]];},"),
+			array(array(
 				array(1, 25, 100),
 				array(2, 50, 90),
 				array(3, 100, 80),
-			), "[[1,25,100],[2,50,90],[3,100,80]]");
+			), "[[1,25,100],[2,50,90],[3,100,80]]"),
+		);
+	}
+	
+	/**
+	 * @dataProvider dataFormatProvider
+	 */
+	public function testDataFormats($data, $expected) {
+		$widget = $this->controller->widget('DygraphsWidget', array(
+				'data'=>$data,
+		));
+		$id = $widget->htmlOptions['id'];
+		$script = $this->getScript($id);
+		$this->assertNotFalse($script);
+		$this->assertContains($expected, $script);
 	}
 	
 	public function testDataWithDates() {
@@ -82,8 +88,8 @@ class DygraphsWidgetTest extends PHPUnit_Framework_TestCase {
 		));
 		$this->assertContains(
 				"[[new Date('2014/01/10 00:06:50'),25,100],[new Date('2014/12/23 10:16:40'),50,90],[new Date('2015/07/01 03:09:19'),100,80]]",
-				$this->getLastScript()
-				);
+				$this->getScript($widget->htmlOptions['id'])
+		);
 	}
 	
 	public function testVarName() {
@@ -92,7 +98,7 @@ class DygraphsWidgetTest extends PHPUnit_Framework_TestCase {
 		));
 		$this->assertContains(
 				"var testvar = new Dygraph(",
-				$this->getLastScript()
+				$this->getScript($widget->htmlOptions['id'])
 		);
 	}
 	
@@ -119,7 +125,7 @@ class DygraphsWidgetTest extends PHPUnit_Framework_TestCase {
 		));
 		$this->assertContains(
 				"{'strokeWidth':2,'parabola':{'strokeWidth':0,'drawPoints':true,'pointSize':4,'highlightCircleSize':6},'line':{'strokeWidth':1,'drawPoints':true,'pointSize':1.5},'sine wave':{'strokeWidth':3,'highlightCircleSize':10}}",
-				$this->getLastScript()
+				$this->getScript($widget->htmlOptions['id'])
 		);
 	}
 	
